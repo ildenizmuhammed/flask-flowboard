@@ -21,7 +21,7 @@ def merhaba_flask():
     <p>İlk Flask uygulamam başarıyla çalışıyor!</p>
     <p>Sunucu: Debian 12 + Apache</p>
     <p><a href="/index2">Çıkmak için tıklayın.</a></p>
-    <p><a href="/users">Kullanıcıları Göster</a></p>
+    <p><a href="/user">Kullanıcıları Göster</a></p>
     '''
 
 @app.route('/index2')
@@ -33,18 +33,18 @@ def index2():
     <a href="/">← Ana sayfaya dön</a>
     '''
 
-@app.route('/users')
-def users():
+@app.route('/user')
+def user():
     try:
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users")  # Tablo adınızı buraya yazın
-        users = cursor.fetchall()
+        cursor.execute("SELECT * FROM user")  # Tablo adınızı buraya yazın
+        user = cursor.fetchall()
         cursor.close()
         conn.close()
         
         html = '<h2>Kullanıcı Listesi</h2><table border="1">'
-        for user in users:
+        for user in user:
             html += '<tr>'
             for field in user:
                 html += f'<td>{field}</td>'
