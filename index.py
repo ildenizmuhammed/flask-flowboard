@@ -29,6 +29,7 @@ def index2():
         </head>
         <body>
             <h1>🎉 Güle Güle Flask!</h1>
+            <h2>🎉 Görüşmek üzere</h2>
             <p>İkinci Flask sayfası başarıyla çalışıyor!</p>
             <p>Sunucu: Debian 12 + Apache</p>
         </body>
