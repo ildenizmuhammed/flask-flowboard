@@ -13,6 +13,7 @@ def merhaba_flask():
         <body>
             <h1>🎉 Merhaba Flask!</h1>
             <h2>🎉 Bugün Nasılsın? Umarım iyisin.</h2>
+            <h2>🎉 Bugün Nasılsın? Umarım iyisin.</h2>
             <p>İlk Flask uygulamam başarıyla çalışıyor!</p>
             <p>Sunucu: Debian 12 + Apache</p>
             <p><a href="/index2">Çıkmak için tıklayın.</a></p>
