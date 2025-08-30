@@ -1,18 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Kayıt Ekranı</title>
+    <title>Kullanıcı Kaydı</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-container {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            width: 400px;
+            text-align: center;
+        }
+
+        .register-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #2575fc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #2575fc;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #1b5edb;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #2575fc;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h2>Yeni Kullanıcı Kaydı</h2>
-    <form method="post">
-        İsim: <input type="text" name="name" required><br><br>
-        Soyisim: <input type="text" name="surname" required><br><br>
-        Mail: <input type="email" name="mail" required><br><br>
-        <button type="submit">Kaydet</button>
-    </form>
-    <br>
-    <a href="/">← Ana sayfaya dön</a>
+    <div class="register-container">
+        <h2>Yeni Kullanıcı Kaydı</h2>
+        <form method="post">
+            <div class="form-group">
+                <label>İsim</label>
+                <input type="text" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Soyisim</label>
+                <input type="text" name="surname" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mail</label>
+                <input type="email" name="mail" required>
+            </div>
+
+            <button type="submit">Kaydet</button>
+        </form>
+        <a class="back-link" href="/">← Ana sayfay dön</a>
+    </div>
 </body>
 </html>
