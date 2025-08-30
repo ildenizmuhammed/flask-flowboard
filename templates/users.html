@@ -1,16 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Kullanıcılar</title>
     <meta charset="UTF-8">
+    <title>Kullanıcı Listesi</title>
 </head>
 <body>
     <h2>Kayıtlı Kullanıcılar</h2>
-    <ul>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Mail</th>
+        </tr>
         {% for user in users %}
-            <li>{{ user[0] }} - {{ user[1] }}</li>
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
+            <td>{{ user[3] }}</td>
+        </tr>
         {% endfor %}
-    </ul>
-    <a href="/">Yeni Kayıt Ekle</a>
+    </table>
+    <br>
+    <a href="/">← Ana sayfaya dön</a>
 </body>
 </html>

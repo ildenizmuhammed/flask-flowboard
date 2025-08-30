@@ -1,50 +1,65 @@
-from flask import Flask, render_template, request, redirect
-import sqlite3
+from flask import Flask, request, redirect, render_template
+import pymysql
 
 app = Flask(__name__)
 
-# Veritabanını oluştur
-def init_db():
-    conn = sqlite3.connect("users.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+# Database bağlantısı
+def get_db():
+    return pymysql.connect(
+        host='192.168.1.165',   # DB veya HAProxy IP
+        port=3306,
+        user='root',
+        password='ildeniz',
+        database='flowboard',
+        charset='utf8mb4'
     )
-    """)
-    conn.commit()
-    conn.close()
 
-# Ana sayfa (register formu)
-@app.route("/", methods=["GET", "POST"])
+@app.route('/')
+def home():
+    return '''
+    <h1>Merhaba Flask + MariaDB!</h1>
+    <p><a href="/register">Yeni Kullanıcı Kaydet</a></p>
+    <p><a href="/users">Kullanıcıları Göster</a></p>
+    '''
+
+# Register formu
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+    if request.method == 'POST':
+        name = request.form['name']
+        surname = request.form['surname']
+        mail = request.form['mail']
 
-        # Veritabanına kaydet
-        conn = sqlite3.connect("users.db")
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-        conn.commit()
-        conn.close()
-
-        return redirect("/users")  # Kayıttan sonra kullanıcıları göster
+        try:
+            conn = get_db()
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO users (name, surname, mail) VALUES (%s, %s, %s)",
+                (name, surname, mail)
+            )
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect('/users')
+        except Exception as e:
+            return f"Kayıt hatası: {str(e)}<br><a href='/'>Ana sayfaya dön</a>"
 
     return render_template("register.html")
 
-# Kayıtlı kullanıcıları listele
-@app.route("/users")
+# Kullanıcıları listeleme
+@app.route('/users')
 def users():
-    conn = sqlite3.connect("users.db")
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, username FROM users")
-    users = cursor.fetchall()
-    conn.close()
-    return render_template("users.html", users=users)
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, surname, mail FROM users")
+        users = cursor.fetchall()
+        cursor.close()
+        conn.close()
 
-if __name__ == "__main__":
-    init_db()
+        return render_template("users.html", users=users)
+    except Exception as e:
+        return f'Database hatası: {str(e)}<br><a href="/">← Ana sayfaya dön</a>'
+
+if __name__ == '__main__':
     app.run(debug=True)
