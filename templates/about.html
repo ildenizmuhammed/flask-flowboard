@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımda - Benim Blogum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        .about-section {
+            padding: 80px 0;
+        }
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #667eea;
+        }
+        .skill-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .social-links a {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .social-links a:hover {
+            transform: translateY(-3px);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-pen-fancy me-2"></i>Benim Blogum
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/new-post">Yeni Yazı</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about">Hakkımda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">Hakkımda</h1>
+            <p class="lead">Ben kimim ve neler yapıyorum?</p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-4 text-center">
+                    <img src="https://via.placeholder.com/200x200/667eea/ffffff?text=Ben" alt="Profil Resmi" class="profile-image mb-4">
+                    <h3 class="fw-bold">Blog Yazarı</h3>
+                    <p class="text-muted">Günlük düşüncelerimi paylaşıyorum</p>
+                </div>
+                <div class="col-lg-8">
+                    <h2 class="fw-bold mb-4">Merhaba! Ben [Adınız]</h2>
+                    <p class="lead mb-4">
+                        Bu blog, günlük düşüncelerimi, deneyimlerimi ve ilgi alanlarımı paylaştığım kişisel bir alan. 
+                        Burada teknoloji, yaşam, bilim ve sanat gibi çeşitli konularda yazılar yazıyorum.
+                    </p>
+                    <p class="mb-4">
+                        Her gün yeni bir konuda yazı yazmaya çalışıyorum. Bu sadece benim için bir hobi değil, 
+                        aynı zamanda düşüncelerimi organize etmenin ve başkalarıyla paylaşmanın bir yolu.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5">
+
+            <!-- Interests -->
+            <div class="row mb-5">
+                <div class="col-12 text-center mb-4">
+                    <h2 class="fw-bold">İlgi Alanlarım</h2>
+                    <p class="text-muted">Bu konularda yazılar yazıyorum</p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="skill-item text-center">
+                        <i class="fas fa-laptop-code fa-3x text-primary mb-3"></i>
+                        <h5>Teknoloji</h5>
+                        <p class="text-muted">Yazılım, donanım ve dijital dünya hakkında yazılar</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="skill-item text-center">
+                        <i class="fas fa-heart fa-3x text-primary mb-3"></i>
+                        <h5>Yaşam</h5>
+                        <p class="text-muted">Günlük deneyimler ve kişisel gelişim</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="skill-item text-center">
+                        <i class="fas fa-flask fa-3x text-primary mb-3"></i>
+                        <h5>Bilim</h5>
+                        <p class="text-muted">Bilimsel konular ve araştırmalar</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="skill-item text-center">
+                        <i class="fas fa-palette fa-3x text-primary mb-3"></i>
+                        <h5>Sanat</h5>
+                        <p class="text-muted">Sanat ve kültür dünyasından yazılar</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Stats -->
+            <div class="row text-center">
+                <div class="col-12 mb-4">
+                    <h2 class="fw-bold">Blog İstatistikleri</h2>
+                    <p class="text-muted">Blogum hakkında bazı sayılar</p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <i class="fas fa-pen-fancy fa-2x text-primary mb-3"></i>
+                            <h3 class="fw-bold">50+</h3>
+                            <p class="text-muted">Yazı</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                            <h3 class="fw-bold">1000+</h3>
+                            <p class="text-muted">Okuyucu</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <i class="fas fa-calendar fa-2x text-primary mb-3"></i>
+                            <h3 class="fw-bold">365</h3>
+                            <p class="text-muted">Gün</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <i class="fas fa-folder fa-2x text-primary mb-3"></i>
+                            <h3 class="fw-bold">5</h3>
+                            <p class="text-muted">Kategori</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-pen-fancy me-2"></i>Benim Blogum</h5>
+                    <p class="text-muted">Günlük düşüncelerimi ve deneyimlerimi paylaştığım kişisel blog sitem.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Hızlı Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-muted text-decoration-none">Ana Sayfa</a></li>
+                        <li><a href="/blog" class="text-muted text-decoration-none">Blog</a></li>
+                        <li><a href="/contact" class="text-muted text-decoration-none">İletişim</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted mb-0">&copy; 2024 Benim Blogum. Tüm hakları saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

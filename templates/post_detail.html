@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post[1] }} - Benim Blogum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .post-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        .post-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+        }
+        .post-meta {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .category-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            font-size: 0.9rem;
+        }
+        .share-buttons {
+            margin: 30px 0;
+        }
+        .share-btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .share-btn:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .share-btn.facebook { background: #3b5998; }
+        .share-btn.twitter { background: #1da1f2; }
+        .share-btn.linkedin { background: #0077b5; }
+        .share-btn.whatsapp { background: #25d366; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-pen-fancy me-2"></i>Benim Blogum
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/new-post">Yeni Yazı</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Hakkımda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Post Header -->
+    <section class="post-header">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <span class="badge category-badge mb-3">{{ post[4] }}</span>
+                    <h1 class="display-4 fw-bold mb-4">{{ post[1] }}</h1>
+                    <div class="d-flex justify-content-center align-items-center text-light">
+                        <div class="me-4">
+                            <i class="fas fa-user me-2"></i>{{ post[3] }}
+                        </div>
+                        <div>
+                            <i class="fas fa-calendar me-2"></i>{{ post[5].strftime('%d %B %Y') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Post Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Post Image -->
+                    {% if post[6] %}
+                    <div class="text-center">
+                        <img src="{{ post[6] }}" alt="{{ post[1] }}" class="post-image">
+                    </div>
+                    {% endif %}
+
+                    <!-- Post Meta -->
+                    <div class="post-meta">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-user me-2"></i>Yazar</h6>
+                                <p class="mb-0">{{ post[3] }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-calendar me-2"></i>Yayın Tarihi</h6>
+                                <p class="mb-0">{{ post[5].strftime('%d %B %Y, %H:%M') }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-folder me-2"></i>Kategori</h6>
+                                <span class="badge category-badge">{{ post[4] }}</span>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-clock me-2"></i>Okuma Süresi</h6>
+                                <p class="mb-0">{{ (post[2]|length / 200)|round|int }} dakika</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post Content -->
+                    <div class="post-content">
+                        {{ post[2]|safe|replace('\n', '<br>') }}
+                    </div>
+
+                    <!-- Share Buttons -->
+                    <div class="share-buttons text-center">
+                        <h5 class="mb-3">Bu yazıyı paylaşın:</h5>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="share-btn facebook">
+                            <i class="fab fa-facebook-f me-2"></i>Facebook
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text={{ post[1] }}&url={{ request.url }}" target="_blank" class="share-btn twitter">
+                            <i class="fab fa-twitter me-2"></i>Twitter
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url }}" target="_blank" class="share-btn linkedin">
+                            <i class="fab fa-linkedin-in me-2"></i>LinkedIn
+                        </a>
+                        <a href="https://wa.me/?text={{ post[1] }}%20{{ request.url }}" target="_blank" class="share-btn whatsapp">
+                            <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                        </a>
+                    </div>
+
+                    <!-- Back to Blog -->
+                    <div class="text-center mt-5">
+                        <a href="/blog" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i>Blog'a Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-pen-fancy me-2"></i>Benim Blogum</h5>
+                    <p class="text-muted">Günlük düşüncelerimi ve deneyimlerimi paylaştığım kişisel blog sitem.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Hızlı Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-muted text-decoration-none">Ana Sayfa</a></li>
+                        <li><a href="/blog" class="text-muted text-decoration-none">Blog</a></li>
+                        <li><a href="/new-post" class="text-muted text-decoration-none">Yeni Yazı</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted mb-0">&copy; 2024 Benim Blogum. Tüm hakları saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

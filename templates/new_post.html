@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Yazı Ekle - Benim Blogum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #5a6fd8, #6a4190);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-pen-fancy me-2"></i>Benim Blogum
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/new-post">Yeni Yazı</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Hakkımda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">Yeni Yazı Ekle</h1>
+            <p class="lead">Günlük düşüncelerinizi ve deneyimlerinizi paylaşın</p>
+        </div>
+    </section>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- New Post Form -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body p-5">
+                            <form method="POST" action="/new-post">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">
+                                                <i class="fas fa-heading me-2"></i>Başlık
+                                            </label>
+                                            <input type="text" class="form-control form-control-lg" id="title" name="title" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="category" class="form-label">
+                                                <i class="fas fa-folder me-2"></i>Kategori
+                                            </label>
+                                            <select class="form-select form-select-lg" id="category" name="category" required>
+                                                <option value="">Kategori Seçin</option>
+                                                {% for category in categories %}
+                                                <option value="{{ category }}">{{ category }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="author" class="form-label">
+                                        <i class="fas fa-user me-2"></i>Yazar
+                                    </label>
+                                    <input type="text" class="form-control" id="author" name="author" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="image_url" class="form-label">
+                                        <i class="fas fa-image me-2"></i>Resim URL'si (İsteğe bağlı)
+                                    </label>
+                                    <input type="url" class="form-control" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
+                                    <div class="form-text">Yazınızla birlikte görünecek resmin URL'sini girin</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="excerpt" class="form-label">
+                                        <i class="fas fa-quote-left me-2"></i>Özet
+                                    </label>
+                                    <textarea class="form-control" id="excerpt" name="excerpt" rows="3" placeholder="Yazınızın kısa bir özeti..." required></textarea>
+                                    <div class="form-text">Bu özet ana sayfada ve blog listesinde görünecek</div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="content" class="form-label">
+                                        <i class="fas fa-edit me-2"></i>İçerik
+                                    </label>
+                                    <textarea class="form-control" id="content" name="content" rows="12" placeholder="Blog yazınızın içeriğini buraya yazın..." required></textarea>
+                                    <div class="form-text">Yazınızın tam içeriğini buraya yazın</div>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="/blog" class="btn btn-outline-secondary btn-lg me-md-2">
+                                        <i class="fas fa-times me-2"></i>İptal
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-save me-2"></i>Yazıyı Kaydet
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-pen-fancy me-2"></i>Benim Blogum</h5>
+                    <p class="text-muted">Günlük düşüncelerimi ve deneyimlerimi paylaştığım kişisel blog sitem.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Hızlı Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-muted text-decoration-none">Ana Sayfa</a></li>
+                        <li><a href="/blog" class="text-muted text-decoration-none">Blog</a></li>
+                        <li><a href="/new-post" class="text-muted text-decoration-none">Yeni Yazı</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted mb-0">&copy; 2024 Benim Blogum. Tüm hakları saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

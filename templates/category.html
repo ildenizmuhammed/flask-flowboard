@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category }} Kategorisi - Benim Blogum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .post-image {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .category-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-pen-fancy me-2"></i>Benim Blogum
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/new-post">Yeni Yazı</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Hakkımda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">{{ category }} Kategorisi</h1>
+            <p class="lead">{{ posts|length }} yazı bulundu</p>
+            <a href="/blog" class="btn btn-light btn-lg">
+                <i class="fas fa-arrow-left me-2"></i>Tüm Yazılara Dön
+            </a>
+        </div>
+    </section>
+
+    <!-- Category Posts -->
+    <section class="py-5">
+        <div class="container">
+            {% if posts %}
+                <div class="row">
+                    {% for post in posts %}
+                    <div class="col-lg-6 col-xl-4 mb-4">
+                        <div class="card post-card h-100">
+                            {% if post[6] %}
+                            <img src="{{ post[6] }}" class="card-img-top post-image" alt="{{ post[1] }}">
+                            {% else %}
+                            <div class="card-img-top post-image bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-image fa-3x text-muted"></i>
+                            </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <span class="badge category-badge mb-2">{{ post[4] }}</span>
+                                <h5 class="card-title">{{ post[1] }}</h5>
+                                <p class="card-text text-muted">{{ post[2][:120] }}...</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-1"></i>{{ post[3] }}
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>{{ post[5].strftime('%d.%m.%Y') }}
+                                    </small>
+                                </div>
+                                <a href="/post/{{ post[0] }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-arrow-right me-2"></i>Devamını Oku
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <div class="py-5">
+                            <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                            <h4>Bu kategoride henüz yazı yok</h4>
+                            <p class="text-muted">{{ category }} kategorisinde henüz yazı bulunmuyor.</p>
+                            <a href="/new-post" class="btn btn-primary btn-lg me-3">
+                                <i class="fas fa-plus me-2"></i>Yeni Yazı Ekle
+                            </a>
+                            <a href="/blog" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-list me-2"></i>Tüm Yazıları Gör
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-pen-fancy me-2"></i>Benim Blogum</h5>
+                    <p class="text-muted">Günlük düşüncelerimi ve deneyimlerimi paylaştığım kişisel blog sitem.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Hızlı Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-muted text-decoration-none">Ana Sayfa</a></li>
+                        <li><a href="/blog" class="text-muted text-decoration-none">Blog</a></li>
+                        <li><a href="/new-post" class="text-muted text-decoration-none">Yeni Yazı</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted mb-0">&copy; 2024 Benim Blogum. Tüm hakları saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
