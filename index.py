@@ -434,16 +434,22 @@ def admin_messages():
         
         # Convert timestamps to datetime objects if needed
         for i, message in enumerate(messages):
-            if isinstance(message[6], int):  # If created_at is timestamp
-                from datetime import datetime
-                messages[i] = list(message)
-                messages[i][6] = datetime.fromtimestamp(message[6])
+            try:
+                if isinstance(message[6], int):  # If created_at is timestamp
+                    from datetime import datetime
+                    messages[i] = list(message)
+                    messages[i][6] = datetime.fromtimestamp(message[6])
+            except Exception as date_error:
+                print(f"Date conversion error for message {i}: {date_error}")
+                # Keep original timestamp if conversion fails
+                pass
         
         cursor.close()
         conn.close()
         
         return render_template('admin_messages.html', messages=messages)
     except Exception as e:
+        print(f"Admin messages error: {e}")
         flash(f'Database hatası: {e}', 'error')
         return render_template('admin_messages.html', messages=[])
 
@@ -505,4 +511,4 @@ def contact():
 init_db()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

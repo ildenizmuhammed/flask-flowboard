@@ -229,12 +229,16 @@
                                                     {% endif %}
                                                 </div>
                                             </div>
-                                            <div class="mb-3">
-                                                <strong>Mesaj:</strong>
-                                                <div class="mt-2 p-3 bg-light rounded">
-                                                    {{ message[5]|nl2br }}
-                                                </div>
-                                            </div>
+                                                                                         <div class="mb-3">
+                                                 <strong>Mesaj:</strong>
+                                                 <div class="mt-2 p-3 bg-light rounded">
+                                                     {% if message[5] %}
+                                                         {{ message[5]|replace('\n', '<br>')|safe }}
+                                                     {% else %}
+                                                         <em class="text-muted">Mesaj içeriği bulunamadı</em>
+                                                     {% endif %}
+                                                 </div>
+                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <a href="mailto:{{ message[3] }}?subject=Re: {{ message[4] }}" 
