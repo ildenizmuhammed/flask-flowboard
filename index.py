@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 from functools import wraps
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='img', static_url_path='/img')
 app.secret_key = 'your-secret-key-here'  # For flash messages and sessions
 
 # Admin bilgileri (gerçek uygulamada veritabanında şifrelenmiş olarak saklanmalı)
