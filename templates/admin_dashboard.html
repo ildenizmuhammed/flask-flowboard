@@ -239,7 +239,15 @@
                                 <td>
                                     <span class="badge bg-primary">{{ post[3] }}</span>
                                 </td>
-                                <td>{{ post[4].strftime('%d.%m.%Y') }}</td>
+                                <td>
+                                    {% if post[4] is string %}
+                                        {{ post[4] }}
+                                    {% elif post[4] is defined and post[4] %}
+                                        {{ post[4].strftime('%d.%m.%Y') }}
+                                    {% else %}
+                                        Tarih yok
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <a href="/admin/edit-post/{{ post[0] }}" class="btn btn-sm btn-outline-primary me-1">
                                         <i class="fas fa-edit"></i>
@@ -292,7 +300,15 @@
                                     <br><small class="text-muted">{{ message[3] }}</small>
                                 </td>
                                 <td>{{ message[4] }}</td>
-                                <td>{{ message[5] if message[5] is string else message[5].strftime('%d.%m.%Y %H:%M') if hasattr(message[5], 'strftime') else 'Tarih yok' }}</td>
+                                <td>
+                                    {% if message[5] is string %}
+                                        {{ message[5] }}
+                                    {% elif message[5] is defined and message[5] %}
+                                        {{ message[5].strftime('%d.%m.%Y %H:%M') }}
+                                    {% else %}
+                                        Tarih yok
+                                    {% endif %}
+                                </td>
                                 <td>
                                     {% if message[6] %}
                                         <span class="badge bg-success">Okundu</span>
