@@ -101,6 +101,21 @@
         </div>
     </section>
 
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <!-- Contact Content -->
     <section class="py-5">
         <div class="container">
@@ -150,38 +165,38 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-body p-5">
                             <h3 class="fw-bold mb-4">Mesaj Gönderin</h3>
-                            <form>
+                            <form method="POST" action="/contact">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="firstName" class="form-label">Ad</label>
-                                        <input type="text" class="form-control" id="firstName" required>
+                                        <input type="text" class="form-control" id="firstName" name="firstName" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="lastName" class="form-label">Soyad</label>
-                                        <input type="text" class="form-control" id="lastName" required>
+                                        <input type="text" class="form-control" id="lastName" name="lastName" required>
                                     </div>
                                 </div>
                                 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">E-posta</label>
-                                    <input type="email" class="form-control" id="email" required>
+                                    <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
                                 
                                 <div class="mb-3">
                                     <label for="subject" class="form-label">Konu</label>
-                                    <select class="form-select" id="subject" required>
+                                    <select class="form-select" id="subject" name="subject" required>
                                         <option value="">Konu Seçin</option>
-                                        <option value="general">Genel Soru</option>
-                                        <option value="blog">Blog Hakkında</option>
-                                        <option value="collaboration">İş Birliği</option>
-                                        <option value="feedback">Geri Bildirim</option>
-                                        <option value="other">Diğer</option>
+                                        <option value="Genel Soru">Genel Soru</option>
+                                        <option value="Blog Hakkında">Blog Hakkında</option>
+                                        <option value="İş Birliği">İş Birliği</option>
+                                        <option value="Geri Bildirim">Geri Bildirim</option>
+                                        <option value="Diğer">Diğer</option>
                                     </select>
                                 </div>
                                 
                                 <div class="mb-4">
-                                    <label for="message" class="form-label">Mesajınız</label>
-                                    <textarea class="form-control" id="message" rows="6" placeholder="Mesajınızı buraya yazın..." required></textarea>
+                                    <label for="email" class="form-label">Mesajınız</label>
+                                    <textarea class="form-control" id="message" name="message" rows="6" placeholder="Mesajınızı buraya yazın..." required></textarea>
                                 </div>
                                 
                                 <div class="d-grid">

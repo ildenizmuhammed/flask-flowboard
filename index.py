@@ -62,6 +62,20 @@ def init_db():
             )
         """)
         
+        # Create contact_messages table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS contact_messages (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                first_name VARCHAR(100) NOT NULL,
+                last_name VARCHAR(100) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                subject VARCHAR(100) NOT NULL,
+                message TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                is_read BOOLEAN DEFAULT FALSE
+            )
+        """)
+        
         # Insert default categories
         cursor.execute("""
             INSERT IGNORE INTO categories (name, description) VALUES 
@@ -215,6 +229,10 @@ def admin_dashboard():
         cursor.execute("SELECT COUNT(*) FROM blog_posts")
         total_posts = cursor.fetchone()[0]
         
+        # Get unread messages count
+        cursor.execute("SELECT COUNT(*) FROM contact_messages WHERE is_read = FALSE")
+        unread_messages = cursor.fetchone()[0]
+        
         # Get recent posts
         cursor.execute("""
             SELECT id, title, author, category, created_at 
@@ -224,10 +242,23 @@ def admin_dashboard():
         """)
         recent_posts = cursor.fetchall()
         
+        # Get recent messages
+        cursor.execute("""
+            SELECT id, first_name, last_name, subject, created_at, is_read
+            FROM contact_messages 
+            ORDER BY created_at DESC 
+            LIMIT 5
+        """)
+        recent_messages = cursor.fetchall()
+        
         cursor.close()
         conn.close()
         
-        return render_template("admin_dashboard.html", total_posts=total_posts, recent_posts=recent_posts)
+        return render_template("admin_dashboard.html", 
+                             total_posts=total_posts, 
+                             unread_messages=unread_messages,
+                             recent_posts=recent_posts,
+                             recent_messages=recent_messages)
     except Exception as e:
         return f'Database hatası: {str(e)}'
 
@@ -366,12 +397,80 @@ def admin_posts():
     except Exception as e:
         return f'Database hatası: {str(e)}'
 
+@app.route('/admin/messages')
+@admin_required
+def admin_messages():
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+            SELECT id, first_name, last_name, email, subject, message, created_at, is_read
+            FROM contact_messages 
+            ORDER BY created_at DESC
+        """)
+        messages = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return render_template('admin_messages.html', messages=messages)
+    except Exception as e:
+        flash(f'Database hatası: {e}', 'error')
+        return render_template('admin_messages.html', messages=[])
+
+@app.route('/admin/mark-read/<int:message_id>')
+@admin_required
+def mark_message_read(message_id):
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute("UPDATE contact_messages SET is_read = TRUE WHERE id = %s", (message_id,))
+        conn.commit()
+        
+        cursor.close()
+        conn.close()
+        
+        flash('Mesaj okundu olarak işaretlendi.', 'success')
+    except Exception as e:
+        flash(f'Hata: {e}', 'error')
+    
+    return redirect(url_for('admin_messages'))
+
 @app.route('/about')
 def about():
     return render_template("about.html")
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        try:
+            first_name = request.form['firstName']
+            last_name = request.form['lastName']
+            email = request.form['email']
+            subject = request.form['subject']
+            message = request.form['message']
+            
+            conn = get_db()
+            cursor = conn.cursor()
+            
+            cursor.execute("""
+                INSERT INTO contact_messages (first_name, last_name, email, subject, message)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (first_name, last_name, email, subject, message))
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+            
+            flash('Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.', 'success')
+            return redirect(url_for('contact'))
+            
+        except Exception as e:
+            flash('Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.', 'error')
+            print(f"Contact form error: {e}")
+    
     return render_template("contact.html")
 
 # Initialize database when app starts
