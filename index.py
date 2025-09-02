@@ -1,10 +1,15 @@
-from flask import Flask, request, redirect, render_template, flash, url_for
+from flask import Flask, request, redirect, render_template, flash, url_for, session
 import pymysql
 from datetime import datetime
 import os
+from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # For flash messages
+app.secret_key = 'your-secret-key-here'  # For flash messages and sessions
+
+# Admin bilgileri (gerçek uygulamada veritabanında şifrelenmiş olarak saklanmalı)
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD = 'admin123'
 
 # Database bağlantısı
 def get_db():
@@ -16,6 +21,16 @@ def get_db():
         database='flowboard',
         charset='utf8mb4'
     )
+
+# Admin girişi gerekli sayfalar için decorator
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'admin_logged_in' not in session:
+            flash('Bu sayfaya erişmek için admin girişi yapmalısınız!', 'error')
+            return redirect(url_for('admin_login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Initialize database tables
 def init_db():
@@ -165,8 +180,61 @@ def category_posts(category_name):
     except Exception as e:
         return f'Database hatası: {str(e)}'
 
-@app.route('/new-post', methods=['GET', 'POST'])
-def new_post():
+# Admin giriş sayfası
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session['admin_logged_in'] = True
+            flash('Admin girişi başarılı!', 'success')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('Hatalı kullanıcı adı veya şifre!', 'error')
+    
+    return render_template("admin_login.html")
+
+# Admin çıkış
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    flash('Admin çıkışı yapıldı!', 'success')
+    return redirect(url_for('home'))
+
+# Admin paneli ana sayfa
+@app.route('/admin')
+@admin_required
+def admin_dashboard():
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        # Get total posts count
+        cursor.execute("SELECT COUNT(*) FROM blog_posts")
+        total_posts = cursor.fetchone()[0]
+        
+        # Get recent posts
+        cursor.execute("""
+            SELECT id, title, author, category, created_at 
+            FROM blog_posts 
+            ORDER BY created_at DESC 
+            LIMIT 5
+        """)
+        recent_posts = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return render_template("admin_dashboard.html", total_posts=total_posts, recent_posts=recent_posts)
+    except Exception as e:
+        return f'Database hatası: {str(e)}'
+
+# Blog yazısı ekleme (sadece admin)
+@app.route('/admin/new-post', methods=['GET', 'POST'])
+@admin_required
+def admin_new_post():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
@@ -186,10 +254,10 @@ def new_post():
             cursor.close()
             conn.close()
             flash('Blog yazısı başarıyla eklendi!', 'success')
-            return redirect('/blog')
+            return redirect(url_for('admin_dashboard'))
         except Exception as e:
             flash(f'Yazı ekleme hatası: {str(e)}', 'error')
-            return redirect('/new-post')
+            return redirect(url_for('admin_new_post'))
 
     try:
         conn = get_db()
@@ -199,7 +267,102 @@ def new_post():
         cursor.close()
         conn.close()
         
-        return render_template("new_post.html", categories=categories)
+        return render_template("admin_new_post.html", categories=categories)
+    except Exception as e:
+        return f'Database hatası: {str(e)}'
+
+# Blog yazısı düzenleme (sadece admin)
+@app.route('/admin/edit-post/<int:post_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_post(post_id):
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        author = request.form['author']
+        category = request.form['category']
+        excerpt = request.form['excerpt']
+        image_url = request.form['image_url']
+
+        try:
+            conn = get_db()
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE blog_posts 
+                SET title = %s, content = %s, author = %s, category = %s, excerpt = %s, image_url = %s
+                WHERE id = %s
+            """, (title, content, author, category, excerpt, image_url, post_id))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            flash('Blog yazısı başarıyla güncellendi!', 'success')
+            return redirect(url_for('admin_dashboard'))
+        except Exception as e:
+            flash(f'Yazı güncelleme hatası: {str(e)}', 'error')
+            return redirect(url_for('admin_edit_post', post_id=post_id))
+
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        # Get post data
+        cursor.execute("""
+            SELECT id, title, content, author, category, excerpt, image_url 
+            FROM blog_posts 
+            WHERE id = %s
+        """, (post_id,))
+        post = cursor.fetchone()
+        
+        if not post:
+            flash('Yazı bulunamadı!', 'error')
+            return redirect(url_for('admin_dashboard'))
+        
+        # Get categories
+        cursor.execute("SELECT name FROM categories")
+        categories = [row[0] for row in cursor.fetchall()]
+        
+        cursor.close()
+        conn.close()
+        
+        return render_template("admin_edit_post.html", post=post, categories=categories)
+    except Exception as e:
+        return f'Database hatası: {str(e)}'
+
+# Blog yazısı silme (sadece admin)
+@app.route('/admin/delete-post/<int:post_id>')
+@admin_required
+def admin_delete_post(post_id):
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM blog_posts WHERE id = %s", (post_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        flash('Blog yazısı başarıyla silindi!', 'success')
+    except Exception as e:
+        flash(f'Yazı silme hatası: {str(e)}', 'error')
+    
+    return redirect(url_for('admin_dashboard'))
+
+# Blog yazısı listesi (sadece admin)
+@app.route('/admin/posts')
+@admin_required
+def admin_posts():
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+            SELECT id, title, author, category, created_at 
+            FROM blog_posts 
+            ORDER BY created_at DESC
+        """)
+        posts = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return render_template("admin_posts.html", posts=posts)
     except Exception as e:
         return f'Database hatası: {str(e)}'
 

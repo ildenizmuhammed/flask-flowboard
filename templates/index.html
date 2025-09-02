@@ -42,6 +42,15 @@
             padding: 40px 0;
             margin-top: 50px;
         }
+        .admin-link {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+        }
+        .admin-link:hover {
+            background: linear-gradient(45deg, #218838, #1ea085);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -63,7 +72,9 @@
                         <a class="nav-link" href="/blog">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/new-post">Yeni Yazı</a>
+                        <a class="nav-link admin-link" href="/admin/login">
+                            <i class="fas fa-user-shield me-2"></i>Admin Girişi
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/about">Hakkımda</a>
@@ -81,8 +92,11 @@
         <div class="container text-center">
             <h1 class="display-4 fw-bold mb-4">Hoş Geldiniz!</h1>
             <p class="lead mb-4">Günlük düşüncelerimi, deneyimlerimi ve ilgi alanlarımı paylaştığım kişisel blog siteme hoş geldiniz.</p>
-            <a href="/blog" class="btn btn-light btn-lg px-4">
+            <a href="/blog" class="btn btn-light btn-lg px-4 me-3">
                 <i class="fas fa-book-open me-2"></i>Blog Yazılarımı Oku
+            </a>
+            <a href="/admin/login" class="btn admin-link btn-lg px-4">
+                <i class="fas fa-user-shield me-2"></i>Admin Paneli
             </a>
         </div>
     </section>
@@ -135,9 +149,9 @@
                         <div class="py-5">
                             <i class="fas fa-pen-fancy fa-4x text-muted mb-3"></i>
                             <h4>Henüz yazı yok</h4>
-                            <p class="text-muted">İlk blog yazınızı eklemek için aşağıdaki butona tıklayın.</p>
-                            <a href="/new-post" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>İlk Yazımı Ekle
+                            <p class="text-muted">Blog yazıları admin panelinden eklenir.</p>
+                            <a href="/admin/login" class="btn admin-link">
+                                <i class="fas fa-user-shield me-2"></i>Admin Girişi
                             </a>
                         </div>
                     </div>
