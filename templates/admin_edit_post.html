@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yazı Düzenle - Admin Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 40px 0;
+        }
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        .btn-admin {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            color: white;
+        }
+        .btn-admin:hover {
+            background: linear-gradient(45deg, #218838, #1ea085);
+            color: white;
+        }
+        .navbar-admin {
+            background: #343a40;
+        }
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-admin">
+        <div class="container">
+            <a class="navbar-brand" href="/admin">
+                <i class="fas fa-user-shield me-2"></i>Admin Paneli
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarAdmin">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/posts">
+                            <i class="fas fa-list me-2"></i>Yazılar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/new-post">
+                            <i class="fas fa-plus me-2"></i>Yeni Yazı
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" target="_blank">
+                            <i class="fas fa-external-link-alt me-2"></i>Siteyi Görüntüle
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>Çıkış
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Header -->
+    <section class="admin-header">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">Yazı Düzenle</h1>
+            <p class="lead">Blog yazınızı güncelleyin ve düzenleyin</p>
+        </div>
+    </section>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    <!-- Edit Post Form -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="form-card">
+                        <div class="card-body p-5">
+                            <form method="POST" action="/admin/edit-post/{{ post[0] }}">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">
+                                                <i class="fas fa-heading me-2"></i>Başlık
+                                            </label>
+                                            <input type="text" class="form-control form-control-lg" id="title" name="title" value="{{ post[1] }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="category" class="form-label">
+                                                <i class="fas fa-folder me-2"></i>Kategori
+                                            </label>
+                                            <select class="form-select form-select-lg" id="category" name="category" required>
+                                                <option value="">Kategori Seçin</option>
+                                                {% for category in categories %}
+                                                <option value="{{ category }}" {% if category == post[4] %}selected{% endif %}>{{ category }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="author" class="form-label">
+                                        <i class="fas fa-user me-2"></i>Yazar
+                                    </label>
+                                    <input type="text" class="form-control" id="author" name="author" value="{{ post[2] }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="image_url" class="form-label">
+                                        <i class="fas fa-image me-2"></i>Resim URL'si (İsteğe bağlı)
+                                    </label>
+                                    <input type="url" class="form-control" id="image_url" name="image_url" value="{{ post[6] or '' }}" placeholder="https://example.com/image.jpg">
+                                    <div class="form-text">Yazınızla birlikte görünecek resmin URL'sini girin</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="excerpt" class="form-label">
+                                        <i class="fas fa-quote-left me-2"></i>Özet
+                                    </label>
+                                    <textarea class="form-control" id="excerpt" name="excerpt" rows="3" placeholder="Yazınızın kısa bir özeti..." required>{{ post[5] or '' }}</textarea>
+                                    <div class="form-text">Bu özet ana sayfada ve blog listesinde görünecek</div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="content" class="form-label">
+                                        <i class="fas fa-edit me-2"></i>İçerik
+                                    </label>
+                                    <textarea class="form-control" id="content" name="content" rows="12" placeholder="Blog yazınızın içeriğini buraya yazın..." required>{{ post[3] }}</textarea>
+                                    <div class="form-text">Yazınızın tam içeriğini buraya yazın</div>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="/admin/posts" class="btn btn-outline-secondary btn-lg me-md-2">
+                                        <i class="fas fa-times me-2"></i>İptal
+                                    </a>
+                                    <button type="submit" class="btn btn-admin btn-lg">
+                                        <i class="fas fa-save me-2"></i>Değişiklikleri Kaydet
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-user-shield me-2"></i>Admin Paneli</h5>
+                    <p class="text-muted">Blog sitenizi yönetmek için güvenli erişim.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Hızlı Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/admin" class="text-muted text-decoration-none">Dashboard</a></li>
+                        <li><a href="/admin/posts" class="text-muted text-decoration-none">Yazılar</a></li>
+                        <li><a href="/admin/logout" class="text-muted text-decoration-none">Çıkış</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted mb-0">&copy; 2024 Benim Blogum - Admin Paneli</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
