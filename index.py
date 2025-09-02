@@ -242,6 +242,13 @@ def admin_dashboard():
         """)
         recent_posts = cursor.fetchall()
         
+        # Convert timestamps to datetime objects if needed
+        for i, post in enumerate(recent_posts):
+            if isinstance(post[4], int):  # If created_at is timestamp
+                from datetime import datetime
+                recent_posts[i] = list(post)
+                recent_posts[i][4] = datetime.fromtimestamp(post[4])
+        
         # Get recent messages
         cursor.execute("""
             SELECT id, first_name, last_name, subject, created_at, is_read
@@ -250,6 +257,13 @@ def admin_dashboard():
             LIMIT 5
         """)
         recent_messages = cursor.fetchall()
+        
+        # Convert timestamps to datetime objects if needed
+        for i, message in enumerate(recent_messages):
+            if isinstance(message[4], int):  # If created_at is timestamp
+                from datetime import datetime
+                recent_messages[i] = list(message)
+                recent_messages[i][4] = datetime.fromtimestamp(message[4])
         
         cursor.close()
         conn.close()
@@ -390,6 +404,13 @@ def admin_posts():
         """)
         posts = cursor.fetchall()
         
+        # Convert timestamps to datetime objects if needed
+        for i, post in enumerate(posts):
+            if isinstance(post[4], int):  # If created_at is timestamp
+                from datetime import datetime
+                posts[i] = list(post)
+                posts[i][4] = datetime.fromtimestamp(post[4])
+        
         cursor.close()
         conn.close()
         
@@ -410,6 +431,13 @@ def admin_messages():
             ORDER BY created_at DESC
         """)
         messages = cursor.fetchall()
+        
+        # Convert timestamps to datetime objects if needed
+        for i, message in enumerate(messages):
+            if isinstance(message[6], int):  # If created_at is timestamp
+                from datetime import datetime
+                messages[i] = list(message)
+                messages[i][6] = datetime.fromtimestamp(message[6])
         
         cursor.close()
         conn.close()

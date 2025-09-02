@@ -292,7 +292,7 @@
                                     <br><small class="text-muted">{{ message[3] }}</small>
                                 </td>
                                 <td>{{ message[4] }}</td>
-                                <td>{{ message[5].strftime('%d.%m.%Y %H:%M') }}</td>
+                                <td>{{ message[5] if message[5] is string else message[5].strftime('%d.%m.%Y %H:%M') if hasattr(message[5], 'strftime') else 'Tarih yok' }}</td>
                                 <td>
                                     {% if message[6] %}
                                         <span class="badge bg-success">Okundu</span>
