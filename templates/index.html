@@ -3,216 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benim Blogum - Ana Sayfa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Accessorize - Aksesuar Dünyası</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 100px 0;
-        }
-        .post-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .post-image {
-            height: 200px;
-            object-fit: cover;
-            width: 100%;
-        }
-        .category-badge {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-        }
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        .footer {
-            background: #2c3e50;
-            color: white;
-            padding: 40px 0;
-            margin-top: 50px;
-        }
+        /* Aynı CSS kodu, hover ve grid efektleri burada */
+        * { box-sizing: border-box; margin:0; padding:0; font-family: 'Roboto', sans-serif; }
+        body { background-color: #f5f5f5; color: #333; }
+        header { background-color: #1e1e1e; color: #fff; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 28px; }
+        nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; }
+        nav a:hover { text-decoration: underline; }
+        .hero { background-image: url('https://images.unsplash.com/photo-1602524811191-3d1b38c2a39c?auto=format&fit=crop&w=1470&q=80'); background-size: cover; background-position: center; height: 400px; display: flex; justify-content: center; align-items: center; color: #fff; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
+        .hero h2 { font-size: 48px; }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 50px; }
+        .product-card { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        .product-card img { width: 100%; border-radius: 10px; }
+        .product-card h3 { margin: 15px 0 10px; font-size: 22px; }
+        .product-card p { font-size: 16px; color: #555; }
+        .product-card .price { font-weight: bold; margin-top: 10px; color: #e63946; }
+        .product-card button { margin-top: 15px; padding: 10px 20px; background-color: #1e1e1e; color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        .product-card button:hover { background-color: #e63946; }
+        footer { background-color: #1e1e1e; color: #fff; text-align: center; padding: 30px; margin-top: 50px; }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-pen-fancy me-2"></i>Benim Blogum
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">Ana Sayfa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/blog">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/new-post">Yeni Yazı</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">Hakkımda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact">İletişim</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-4">Hoş Geldiniz!</h1>
-            <p class="lead mb-4">Günlük düşüncelerimi, deneyimlerimi ve ilgi alanlarımı paylaştığım kişisel blog siteme hoş geldiniz.</p>
-            <a href="/blog" class="btn btn-light btn-lg px-4">
-                <i class="fas fa-book-open me-2"></i>Blog Yazılarımı Oku
-            </a>
-        </div>
+    <header>
+        <h1>Accessorize</h1>
+        <nav>
+            <a href="#">Ana Sayfa</a>
+            <a href="#">Ürünler</a>
+            <a href="#">Hakkımızda</a>
+            <a href="#">İletişim</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h2>Şık Aksesuarlarla Tarzını Yansıt</h2>
     </section>
 
-    <!-- Recent Posts Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <h2 class="fw-bold">Son Yazılarım</h2>
-                    <p class="text-muted">En son paylaştığım blog yazıları</p>
-                </div>
-            </div>
-            
-            <div class="row">
-                {% if recent_posts %}
-                    {% for post in recent_posts %}
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card post-card h-100">
-                            {% if post[6] %}
-                            <img src="{{ post[6] }}" class="card-img-top post-image" alt="{{ post[1] }}">
-                            {% else %}
-                            <div class="card-img-top post-image bg-light d-flex align-items-center justify-content-center">
-                                <i class="fas fa-image fa-3x text-muted"></i>
-                            </div>
-                            {% endif %}
-                            <div class="card-body">
-                                <span class="badge category-badge mb-2">{{ post[4] }}</span>
-                                <h5 class="card-title">{{ post[1] }}</h5>
-                                <p class="card-text text-muted">{{ post[2][:100] }}...</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">
-                                        <i class="fas fa-user me-1"></i>{{ post[3] }}
-                                    </small>
-                                    <small class="text-muted">
-                                        <i class="fas fa-calendar me-1"></i>{{ post[5].strftime('%d.%m.%Y') }}
-                                    </small>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-transparent border-0">
-                                <a href="/post/{{ post[0] }}" class="btn btn-outline-primary w-100">
-                                    <i class="fas fa-arrow-right me-2"></i>Devamını Oku
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="col-12 text-center">
-                        <div class="py-5">
-                            <i class="fas fa-pen-fancy fa-4x text-muted mb-3"></i>
-                            <h4>Henüz yazı yok</h4>
-                            <p class="text-muted">İlk blog yazınızı eklemek için aşağıdaki butona tıklayın.</p>
-                            <a href="/new-post" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>İlk Yazımı Ekle
-                            </a>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-            
-            {% if recent_posts %}
-            <div class="row mt-4">
-                <div class="col-12 text-center">
-                    <a href="/blog" class="btn btn-outline-primary btn-lg">
-                        <i class="fas fa-list me-2"></i>Tüm Yazıları Gör
-                    </a>
-                </div>
-            </div>
-            {% endif %}
+    <section class="products">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image }}" alt="{{ product.name }}">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <div class="price">{{ product.price }}</div>
+            <button>Sepete Ekle</button>
         </div>
+        {% endfor %}
     </section>
 
-    <!-- Categories Section -->
-    {% if categories %}
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <h2 class="fw-bold">Kategoriler</h2>
-                    <p class="text-muted">Yazılarımı kategorilere göre keşfedin</p>
-                </div>
-            </div>
-            
-            <div class="row">
-                {% for category in categories %}
-                <div class="col-lg-3 col-md-6 mb-3">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="fas fa-folder fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">{{ category[0] }}</h5>
-                            <p class="card-text text-muted">{{ category[1] }} yazı</p>
-                            <a href="/category/{{ category[0] }}" class="btn btn-outline-primary">
-                                <i class="fas fa-eye me-2"></i>Görüntüle
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-pen-fancy me-2"></i>Benim Blogum</h5>
-                    <p class="text-muted">Günlük düşüncelerimi ve deneyimlerimi paylaştığım kişisel blog sitem.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <h5>Hızlı Linkler</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/blog" class="text-muted text-decoration-none">Blog</a></li>
-                        <li><a href="/about" class="text-muted text-decoration-none">Hakkımda</a></li>
-                        <li><a href="/contact" class="text-muted text-decoration-none">İletişim</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="text-muted mb-0">&copy; 2024 Benim Blogum. Tüm hakları saklıdır.</p>
-                </div>
-            </div>
-        </div>
+    <footer>
+        &copy; 2025 Accessorize. Tüm hakları saklıdır.
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
